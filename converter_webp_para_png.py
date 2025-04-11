@@ -1,14 +1,20 @@
 import os
 from PIL import Image
+from tkinter import Tk, filedialog
 
-# Caminho da pasta com as imagens (use raw string com 'r' antes)
-pasta_origem = r"C:\Users\user1\OneDrive\Desktop\ConversorDeFotos\Parte1"
+# Abre uma janela para o usuário escolher a pasta
+Tk().withdraw()  # Esconde a janela principal do Tkinter
+pasta_origem = filedialog.askdirectory(title="Selecione a pasta com imagens WebP")
+
+if not pasta_origem:
+    print("❌ Nenhuma pasta selecionada. Encerrando...")
+    exit()
 
 # Extensões permitidas
 extensao_origem = ".webp"
 extensao_destino = ".png"
 
-# Cria uma nova pasta para as imagens convertidas (chamada "convertidas")
+# Cria uma nova pasta para as imagens convertidas (dentro da pasta escolhida)
 pasta_destino = os.path.join(pasta_origem, "convertidas")
 os.makedirs(pasta_destino, exist_ok=True)
 
@@ -21,6 +27,7 @@ for nome_arquivo in os.listdir(pasta_origem):
 
         with Image.open(caminho_arquivo) as img:
             img.convert("RGBA").save(caminho_novo, "PNG")
-            print(f"Convertido: {nome_arquivo} → {novo_nome}")
+            print(f"✅ Convertido: {nome_arquivo} → {novo_nome}")
 
-print("\n✅ Conversão finalizada.")
+print("\n🎉 Conversão finalizada!")
+print(f"Imagens salvas em: {pasta_destino}")
